@@ -105,7 +105,11 @@ export default function ShoeDealsFinder() {
               <ToggleGroup
                 type="single"
                 value={viewMode}
-                onValueChange={(value: "grid" | "list") => setViewMode(value)}
+                onValueChange={(value) => {
+                  if (value === "grid" || value === "list") {
+                    setViewMode(value)
+                  }
+                }}
               >
                 <ToggleGroupItem value="grid">
                   <LayoutGrid className="h-5 w-5" />
@@ -115,4 +119,70 @@ export default function ShoeDealsFinder() {
                 </ToggleGroupItem>
               </ToggleGroup>
             </div>
-          </
+          </div>
+
+          {viewMode === "grid" ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {shoes.map((shoe) => (
+                <Card key={shoe.id} className="bg-white shadow-md rounded-lg overflow-hidden">
+                  <div className="relative h-48">
+                    <Image
+                      src={shoe.image}
+                      alt={`${shoe.brand} ${shoe.name}`}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
+                  <CardContent className="p-4">
+                    <h2 className="text-lg font-semibold text-gray-800">{shoe.name}</h2>
+                    <p className="text-gray-600">{shoe.brand}</p>
+                    <p className="text-gray-900 font-bold">{shoe.price}</p>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      <Badge variant="outline" className="text-sm">
+                        {shoe.shipsToChile ? "Ships to Chile" : "No Chile Shipping"}
+                      </Badge>
+                      <Badge variant="outline" className="text-sm">
+                        {shoe.color}
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {shoes.map((shoe) => (
+                <Card key={shoe.id} className="bg-white shadow-md rounded-lg overflow-hidden">
+                  <div className="flex p-4">
+                    <div className="relative h-24 w-24 flex-shrink-0">
+                      <Image
+                        src={shoe.image}
+                        alt={`${shoe.brand} ${shoe.name}`}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-lg"
+                      />
+                    </div>
+                    <div className="ml-4 flex-1">
+                      <h2 className="text-md font-semibold text-gray-800">{shoe.name}</h2>
+                      <p className="text-gray-600">{shoe.brand}</p>
+                      <p className="text-gray-900 font-bold">{shoe.price}</p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <Badge variant="outline" className="text-sm">
+                          {shoe.shipsToChile ? "Ships to Chile" : "No Chile Shipping"}
+                        </Badge>
+                        <Badge variant="outline" className="text-sm">
+                          {shoe.color}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
